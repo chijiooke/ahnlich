@@ -3,8 +3,8 @@ package watcher
 import (
 	"go/ahnlich/api"
 	"go/ahnlich/events"
+	"log"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -49,10 +49,15 @@ func (w *Watcher) Watch(dir string) error {
 }
 
 func (w *Watcher) handleEvent(event fsnotify.Event) {
-	if !strings.HasSuffix(strings.ToLower(event.Name), ".pdf") {
-		w.logger.Info("Ignoring non-PDF file", zap.String("file", event.Name))
-		return
-	}
+	// if !strings.HasSuffix(strings.ToLower(event.Name), ".pdf") {
+	// 	w.logger.Info("Ignoring non-PDF file", zap.String("file", event.Name))
+	// 	return
+	// }
+
+	// log.Println("event:", event)
+	// log.Printf("event:", event.Name, event.Op.String(), event.Has(fsnotify.Create), event.Has(fsnotify.Write), event.Has(fsnotify.Remove))
+	log.Printf("event: %+v", event, event.String())
+
 
 	if !w.debouncer.ShouldProcess(event.Name) {
 		return
